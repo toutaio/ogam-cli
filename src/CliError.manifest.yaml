@@ -1,0 +1,4 @@
+address: cli.CliError
+file: src/CliError.php
+layer: L0_PRIMITIVE
+description: Domain-typed error for CLI operations with code, message, and context.

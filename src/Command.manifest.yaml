@@ -1,0 +1,4 @@
+address: cli.command.execute.Command
+file: src/Command.php
+layer: L3_ORGANISM
+description: Abstract CLI command defining name, description, and execute returning Result<ExitCode, CliError>.

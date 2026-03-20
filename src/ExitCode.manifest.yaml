@@ -1,0 +1,4 @@
+address: cli.ExitCode
+file: src/ExitCode.php
+layer: L0_PRIMITIVE
+description: Branded type wrapping an exit code integer.

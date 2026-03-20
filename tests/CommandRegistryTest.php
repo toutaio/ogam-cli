@@ -3,29 +3,38 @@
 declare(strict_types=1);
 
 use Touta\Aria\Runtime\Failure;
+use Touta\Aria\Runtime\Result;
 use Touta\Aria\Runtime\Success;
+use Touta\Ogam\CliError;
 use Touta\Ogam\Command;
 use Touta\Ogam\CommandInput;
+use Touta\Ogam\CommandName;
 use Touta\Ogam\CommandRegistry;
+use Touta\Ogam\ExitCode;
 
+// Scenario: Registry resolves a registered command by CommandName
 it('registers and resolves a command', function (): void {
     $registry = new CommandRegistry();
     $command = createTestCommand('hello', 'Say hello');
 
     $registry->register($command);
 
-    $result = $registry->resolve('hello');
+    $result = $registry->resolve(new CommandName('hello'));
     expect($result)->toBeInstanceOf(Success::class)
-        ->and($result->value()->name())->toBe('hello');
+        ->and($result->value()->name()->value)->toBe('hello');
 });
 
+// Scenario: Registry returns Failure<CliError> for unknown CommandName
 it('returns failure for unknown command', function (): void {
     $registry = new CommandRegistry();
 
-    $result = $registry->resolve('missing');
-    expect($result)->toBeInstanceOf(Failure::class);
+    $result = $registry->resolve(new CommandName('missing'));
+    expect($result)->toBeInstanceOf(Failure::class)
+        ->and($result->error())->toBeInstanceOf(CliError::class)
+        ->and($result->error()->code)->toBe(CliError::COMMAND_NOT_FOUND);
 });
 
+// Scenario: Registry lists all registered commands
 it('lists all registered commands', function (): void {
     $registry = new CommandRegistry();
     $registry->register(createTestCommand('a', 'First'));
@@ -43,9 +52,9 @@ function createTestCommand(string $name, string $description): Command
             private readonly string $desc,
         ) {}
 
-        public function name(): string
+        public function name(): CommandName
         {
-            return $this->cmdName;
+            return new CommandName($this->cmdName);
         }
 
         public function description(): string
@@ -53,9 +62,9 @@ function createTestCommand(string $name, string $description): Command
             return $this->desc;
         }
 
-        public function execute(CommandInput $input): int
+        public function execute(CommandInput $input): Result
         {
-            return 0;
+            return Success::of(new ExitCode(0));
         }
     };
 }

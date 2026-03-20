@@ -1,0 +1,4 @@
+address: cli.registry.resolve.Commands
+file: src/CommandRegistry.php
+layer: L2_MOLECULE
+description: Registry that maps CommandName to Command instances, resolving via Result.

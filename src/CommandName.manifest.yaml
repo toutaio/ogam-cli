@@ -1,0 +1,4 @@
+address: cli.CommandName
+file: src/CommandName.php
+layer: L0_PRIMITIVE
+description: Branded type wrapping a command name string.

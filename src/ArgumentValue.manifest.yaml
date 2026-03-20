@@ -1,0 +1,4 @@
+address: cli.ArgumentValue
+file: src/ArgumentValue.php
+layer: L0_PRIMITIVE
+description: Branded type wrapping an argument value string.

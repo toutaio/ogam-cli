@@ -1,0 +1,4 @@
+address: cli.CommandInput
+file: src/CommandInput.php
+layer: L0_PRIMITIVE
+description: Immutable input object carrying branded ArgumentValue items for a CLI command.
